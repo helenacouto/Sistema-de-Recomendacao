@@ -66,7 +66,7 @@ void mostrarProdutosCliente(ListaCompras *lista, char *codigoCliente) {
 
     indCliente = lista->mapaClientes[codigoCliente];
 
-    printf("Produtos que o cliente %s comprou:\n", codigoCliente);
+    printf("\nProdutos que o cliente %s comprou:\n", codigoCliente);
     for (int produto : lista->listaCompras[indCliente]) {
         cout << "- " << lista->vetorProdutos[produto] << endl;
     }
