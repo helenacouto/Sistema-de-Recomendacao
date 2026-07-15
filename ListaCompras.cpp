@@ -1,10 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 #include "ListaCompras.h"
-#include <vector>
-#include <map>
-#include <string>
+
+using namespace std;
 
 int criaListaCompras(char *arquivoEscolhido, ListaCompras *lista) {
     Leitura compra;
@@ -18,7 +15,7 @@ int criaListaCompras(char *arquivoEscolhido, ListaCompras *lista) {
     
     fscanf(arquivo, "%*[^\n]\n");
 
-    while(fscanf(arquivo, "%*[^,], %49[^,] , %49[^,] , %99[^\n]\n",
+    while(fscanf(arquivo, "%*[^,], %49[^,] , %49[^,] , %49[^\n]\n",
                   compra.cod_cliente,
                   compra.cod_produto,
                   compra.nome_produto) == 3) {
@@ -26,6 +23,7 @@ int criaListaCompras(char *arquivoEscolhido, ListaCompras *lista) {
         if (lista->mapaClientes.find(compra.cod_cliente) == lista->mapaClientes.end()) {
             lista->mapaClientes[compra.cod_cliente] = lista->vetorClientes.size();
             lista->vetorClientes.push_back(compra.cod_cliente);
+            lista->listaCompras.push_back(list<int>());
         }
 
         if (lista->mapaProdutos.find(compra.cod_produto) == lista->mapaProdutos.end()) {
@@ -44,7 +42,7 @@ int criaListaCompras(char *arquivoEscolhido, ListaCompras *lista) {
     fscanf(arquivo, "%*[^\n]\n");
     int indCliente, indProduto;
 
-    while(fscanf(arquivo, "%*[^,], %49[^,] , %49[^,] , %99[^\n]\n",
+    while(fscanf(arquivo, "%*[^,], %49[^,] , %49[^,] , %49[^\n]\n",
                   compra.cod_cliente,
                   compra.cod_produto,
                   compra.nome_produto) == 3) {
@@ -58,6 +56,28 @@ int criaListaCompras(char *arquivoEscolhido, ListaCompras *lista) {
     return true;
 }
 
-int mostrarProdutosCliente(ListaCompras *lista, char *codigoCliente) {
+void mostrarProdutosCliente(ListaCompras *lista, char *codigoCliente) {
+    int indCliente;
 
+    if (lista->mapaClientes.find(codigoCliente) == lista->mapaClientes.end()) {
+        printf("Cliente %s nao esta registrado.", codigoCliente);
+        return;
+    }
+
+    indCliente = lista->mapaClientes[codigoCliente];
+
+    printf("Produtos que o cliente %s comprou:\n", codigoCliente);
+    for (int produto : lista->listaCompras[indCliente]) {
+        cout << "- " << lista->vetorProdutos[produto] << endl;
+    }
+}
+
+void testadorExibeProdutos(ListaCompras *lista) {
+    char cliente1[] = "99CL9Y01";
+    char cliente2[] = "9O6OSM01";
+    char cliente3[] = "99EF7201";
+
+    mostrarProdutosCliente(lista, cliente1);
+    mostrarProdutosCliente(lista, cliente2);
+    mostrarProdutosCliente(lista, cliente3);
 }

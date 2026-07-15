@@ -5,25 +5,26 @@
 #include <map>
 #include <list>
 #include <string>
-using namespace std;
+#include <iostream>
 
 typedef struct {
     char cod_cliente[50];
     char cod_produto[50];
-    char nome_produto[100];
+    char nome_produto[50];
 } Leitura;
 
 typedef struct {
-    vector<string> vetorClientes;
-    map<string, int> mapaClientes;
+    std::vector<std::string> vetorClientes;
+    std::map<std::string, int> mapaClientes;
 
-    vector<string> vetorProdutos;
-    map<string, int> mapaProdutos;
+    std::vector<std::string> vetorProdutos;
+    std::map<std::string, int> mapaProdutos;
 
-    vector<list<int>> listaCompras;
+    std::vector<std::list<int>> listaCompras;
 } ListaCompras;
 
 int criaListaCompras(char *nome_arquivo, ListaCompras *lista);
-int mostrarProdutosCliente(ListaCompras *lista, char *codigoCliente);
+void mostrarProdutosCliente(ListaCompras *lista, char *codigoCliente);
+void testadorExibeProdutos(ListaCompras *lista);
 
 #endif
