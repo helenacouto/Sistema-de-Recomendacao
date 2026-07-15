@@ -7,3 +7,7 @@ Este projeto tem como objetivo principal a implementação de um sistema de reco
 ##  Integrantes
 - Helena Couto dos Santos
 - Mariana Esthefany Xavier dos Santos
+
+## Compilação
+
+`Atividade 1:` g++ ListaCompras.cpp main.cpp -o ativ1
