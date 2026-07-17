@@ -114,9 +114,7 @@ void testadorExibeSimilaridade (Similaridade *sim, ListaCompras *lista, int indC
         }
      }
 
-    cout << "\n";
-
-    cout << "Cliente " << lista->vetorClientes[indSimilar] 
-        << " mais similar ao cliente " << lista->vetorClientes[indCliente];
-    printf("\nSimilaridade: %.4f)\n", valorSimilaridade);
+    cout << "\nCliente " << lista->vetorClientes[indSimilar] 
+        << " eh mais similar ao cliente " << lista->vetorClientes[indCliente];
+    printf("\nSimilaridade: %.4f\n", valorSimilaridade);
 }
