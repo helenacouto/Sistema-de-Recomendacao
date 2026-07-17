@@ -6,7 +6,7 @@ using namespace std;
 int criaListaCompras(char *arquivoEscolhido, ListaCompras *lista) {
     Leitura compra;
     FILE *arquivo;
-
+                    
     arquivo = fopen(arquivoEscolhido, "r");
     if (arquivo == NULL) {
         perror("Erro ao abrir o arquivo.");
