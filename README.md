@@ -30,6 +30,7 @@ Exemplos:
 ```bash
 ./sistema dados/dados_venda_cluster_0.csv 1 0   # testador da Atividade 1
 ./sistema dados/dados_venda_cluster_0.csv 2 0   # testador da Atividade 2
+```
 
 ##  Integrantes
 - Helena Couto dos Santos
