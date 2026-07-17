@@ -10,4 +10,5 @@ Este projeto tem como objetivo principal a implementação de um sistema de reco
 
 ## Compilação
 
-`Atividade 1:` g++ ListaCompras.cpp main.cpp -o ativ1
+- `Atividade 1:` g++ ListaCompras.cpp main.cpp -o ativ1
+- `Atividade 2:` g++ ListaCompras.cpp Similaridade.cpp main.cpp -o ativ2
