@@ -3,18 +3,20 @@
 
 #include "ListaCompras.h"
 #include "Similaridade.h"
+#include <algorithm>
 
 typedef struct {
     int indProduto;
     double valor;
-} Produto;
+} Rank;
 
 typedef struct {
     std::list<int> L;
-    std::vector<Produto> R;
+    std::vector<Rank> R;
 } Recomendacao;
 
 void criaClientesSimilares(Similaridade *sim, Recomendacao *rec, int c);
 void criaVetorRanqueamento(Similaridade *sim, Recomendacao *rec);
+void calculaRanqueamento(Similaridade *sim, ListaCompras *lista, Recomendacao *rec, int indCliente);
 
 #endif
