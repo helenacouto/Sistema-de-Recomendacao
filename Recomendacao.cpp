@@ -56,7 +56,7 @@ void recomendaProdutos(ListaCompras *lista, Similaridade *sim, char *codigo, int
     int c;
 
     if (lista->mapaClientes.find(codigo) == lista->mapaClientes.end()) {
-        printf("Cliente %s nao esta registrado.", codigo);
+        printf("Cliente %s nao esta registrado.\n", codigo);
         return;
     }
     c = lista->mapaClientes[codigo];
@@ -79,9 +79,9 @@ void recomendaProdutos(ListaCompras *lista, Similaridade *sim, char *codigo, int
 }
 
 void testadorExibeRecomendados(ListaCompras *lista, Similaridade *sim, int k) {
-    char cliente1[] = "99CL9Y01";
-    char cliente2[] = "9O6OSM01";
-    char cliente3[] = "99EF7201";
+    char cliente1[] = "99DL9N01";
+    char cliente2[] = "77602301";
+    char cliente3[] = "22047601";
 
     recomendaProdutos(lista, sim, cliente1, k);
     recomendaProdutos(lista, sim, cliente2, k);
