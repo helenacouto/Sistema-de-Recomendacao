@@ -56,7 +56,6 @@ void liberaMatrizDouble(double **matriz, int linhas) {
         matriz[i] = NULL;
     }
     free(matriz);
-    matriz = NULL;
 }
 
 int criaMatrizIntersecao(Similaridade *sim) {
