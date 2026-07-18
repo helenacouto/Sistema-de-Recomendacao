@@ -16,6 +16,7 @@ typedef struct {
 
 int criaMatrizCompras(ListaCompras *lista, Similaridade *sim);
 int criaTranspostaCompras(Similaridade *sim);
+void liberaMatrizDouble(double **matriz, int linhas);
 int criaMatrizIntersecao(Similaridade *sim);
 int criaVetorP(ListaCompras *lista, Similaridade *sim);
 int criaMatrizSimilaridade(Similaridade *sim);

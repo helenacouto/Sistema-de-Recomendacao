@@ -38,6 +38,8 @@ int main(int argc, char *argv[]) {
     if (entrega == 2) {
         testadorExibeSimilaridade(&sim, &lista, 1);
         testadorExibeSimilaridade(&sim, &lista, 4);
+        liberaMatrizDouble(sim.S, sim.n);
+        sim.S = NULL;
         return 0;
     }
 

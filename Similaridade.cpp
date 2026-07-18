@@ -48,6 +48,16 @@ int criaTranspostaCompras(Similaridade *sim) {
     return true;
 }
 
+void liberaMatrizDouble(double **matriz, int linhas) {
+    if (matriz == NULL) return;
+
+    for (int i = 0; i < linhas; i++) {
+        free(matriz[i]);
+        matriz[i] = NULL;
+    }
+    free(matriz);
+}
+
 int criaMatrizIntersecao(Similaridade *sim) {
     sim->I = (double**) malloc(sim->n * sizeof(double*));
     if (sim->I == NULL) return false;
@@ -65,6 +75,12 @@ int criaMatrizIntersecao(Similaridade *sim) {
             }
         }
     }
+
+    liberaMatrizDouble(sim->A, sim->n);
+    sim->A = NULL;
+    liberaMatrizDouble(sim->At, sim->m);
+    sim->At = NULL;
+
     return true;
 }
 
@@ -92,6 +108,12 @@ int criaMatrizSimilaridade(Similaridade *sim) {
             sim->S[i][j] = 1 - sim->I[i][j]/sim->P[i];
         }
     }
+
+    liberaMatrizDouble(sim->I, sim->n);
+    sim->I = NULL;
+    free(sim->P);
+    sim->P = NULL;
+
     return true;
 }
 
@@ -112,11 +134,9 @@ void testadorExibeSimilaridade (Similaridade *sim, ListaCompras *lista, int indC
             indSimilar = j;
             valorSimilaridade = similaridade;
         }
-     }
+    }
 
-    cout << "\n";
-
-    cout << "Cliente " << lista->vetorClientes[indSimilar] 
-        << " mais similar ao cliente " << lista->vetorClientes[indCliente];
-    printf("\nSimilaridade: %.4f)\n", valorSimilaridade);
+    cout << "\nCliente " << lista->vetorClientes[indSimilar] 
+        << " eh o mais similar ao cliente " << lista->vetorClientes[indCliente];
+    printf("\nSimilaridade: %.4f\n", valorSimilaridade);
 }
