@@ -20,6 +20,7 @@ typedef struct {
     std::vector<std::string> vetorProdutos;
     std::map<std::string, int> mapaProdutos;
 
+    std::vector<std::string> nomeProdutos;
     std::vector<std::list<int>> listaCompras;
 } ListaCompras;
 

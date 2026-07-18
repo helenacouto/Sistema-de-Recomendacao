@@ -44,3 +44,49 @@ void calculaRanqueamento(Similaridade *sim, ListaCompras *lista, Recomendacao *r
     }
 }
 
+bool compararRanqueamento(const Rank &a, const Rank &b) {
+    return a.valor < b.valor;
+}
+
+void ordenaRanqueamento(Recomendacao *rec) {
+    sort(rec->R.begin(), rec->R.end(), compararRanqueamento);
+}
+
+void recomendaProdutos(ListaCompras *lista, Similaridade *sim, char *codigo, int k) {
+    int c;
+
+    if (lista->mapaClientes.find(codigo) == lista->mapaClientes.end()) {
+        printf("Cliente %s nao esta registrado.", codigo);
+        return;
+    }
+    c = lista->mapaClientes[codigo];
+
+    Recomendacao rec;
+
+    criaClientesSimilares(sim, &rec, c);
+    criaVetorRanqueamento(sim, &rec);
+    calculaRanqueamento(sim, lista, &rec, c);
+    ordenaRanqueamento(&rec);
+
+    cout << "Os "<< k << " produtos mais recomendados para o cliente " 
+        << lista->vetorClientes[c] << ":" << endl;
+    for (int i = 0; i < k; i++) {
+        int produto = rec.R[i].indProduto;
+        cout << "- " << lista->nomeProdutos[produto] << endl;
+    }
+
+    printf("\n");
+}
+
+void testadorExibeRecomendados(ListaCompras *lista, Similaridade *sim, int k) {
+    char cliente1[] = "99CL9Y01";
+    char cliente2[] = "9O6OSM01";
+    char cliente3[] = "99EF7201";
+
+    recomendaProdutos(lista, sim, cliente1, k);
+    recomendaProdutos(lista, sim, cliente2, k);
+    recomendaProdutos(lista, sim, cliente3, k);
+
+    liberaMatrizDouble(sim->S, sim->n);
+    sim->S = NULL;
+}

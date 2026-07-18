@@ -3,7 +3,6 @@
 
 #include "ListaCompras.h"
 #include "Similaridade.h"
-#include <algorithm>
 
 typedef struct {
     int indProduto;
@@ -18,5 +17,8 @@ typedef struct {
 void criaClientesSimilares(Similaridade *sim, Recomendacao *rec, int c);
 void criaVetorRanqueamento(Similaridade *sim, Recomendacao *rec);
 void calculaRanqueamento(Similaridade *sim, ListaCompras *lista, Recomendacao *rec, int indCliente);
+void ordenaRanqueamento(Recomendacao *rec);
+void recomendaProdutos(ListaCompras *lista, Similaridade *sim, char *codigo, int k);
+void testadorExibeRecomendados(ListaCompras *lista, Similaridade *sim, int k);
 
 #endif

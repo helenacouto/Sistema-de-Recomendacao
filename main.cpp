@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "ListaCompras.h"
 #include "Similaridade.h"
+#include "Recomendacao.h"
 
 int main(int argc, char *argv[]) {
     if (argc < 4) {
@@ -44,7 +45,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (entrega == 3) {
-        printf("Entrega 3 (Recomendacao) ainda nao implementada.\n");
+        testadorExibeRecomendados(&lista, &sim, k);
         return 0;
     }
 }

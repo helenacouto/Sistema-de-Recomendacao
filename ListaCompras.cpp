@@ -28,7 +28,8 @@ int criaListaCompras(char *arquivoEscolhido, ListaCompras *lista) {
 
         if (lista->mapaProdutos.find(compra.cod_produto) == lista->mapaProdutos.end()) {
             lista->mapaProdutos[compra.cod_produto] = lista->vetorProdutos.size();
-            lista->vetorProdutos.push_back(compra.nome_produto);
+            lista->vetorProdutos.push_back(compra.cod_produto);
+            lista->nomeProdutos.push_back(compra.nome_produto);
         }
     }  
     fclose(arquivo);
@@ -68,7 +69,7 @@ void mostrarProdutosCliente(ListaCompras *lista, char *codigoCliente) {
 
     printf("\nProdutos que o cliente %s comprou:\n", codigoCliente);
     for (int produto : lista->listaCompras[indCliente]) {
-        cout << "- " << lista->vetorProdutos[produto] << endl;
+        cout << "- " << lista->nomeProdutos[produto] << endl;
     }
 }
 
