@@ -15,5 +15,12 @@ void criaClientesSimilares(Similaridade *sim, Recomendacao *rec, int c) {
 }
 
 void criaVetorRanqueamento(Similaridade *sim, Recomendacao *rec) {
+    for (int p = 0; p < sim->m; p++) {
+        Produto item;
+        item.indProduto = p;
+        item.valor = 1;
 
+        rec->R.push_back(item);
+    }
 }
+
