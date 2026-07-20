@@ -11,7 +11,7 @@ Implementar um sistema de recomendação de produtos para clientes de lojas de v
 ## Como compilar
 
 ```bash
-g++ ListaCompras.cpp Similaridade.cpp main.cpp -o sistema
+g++ ListaCompras.cpp Similaridade.cpp Recomendacao.cpp main.cpp -o sistema
 ```
 
 ## Como usar
@@ -30,9 +30,9 @@ Exemplos:
 ```bash
 ./sistema dados/dados_venda_cluster_0.csv 1 0   # testador da Atividade 1
 ./sistema dados/dados_venda_cluster_0.csv 2 0   # testador da Atividade 2
+./sistema dados/dados_venda_cluster_0.csv 3 10  # testador da Atividade 3
 ```
 
 ##  Integrantes
 - Helena Couto dos Santos
 - Mariana Esthefany Xavier dos Santos
-
