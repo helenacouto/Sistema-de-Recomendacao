@@ -1,4 +1,4 @@
-#include <stdio.h>
+./sistema dados/dados_venda_cluster_0.csv 3 10#include <stdio.h>
 #include <stdlib.h>
 #include "Similaridade.h"
 
@@ -123,7 +123,7 @@ double calculaSimilaridade(Similaridade *sim, int i, int j) {
 
 void testadorExibeSimilaridade (Similaridade *sim, ListaCompras *lista, int indCliente) {
     int indSimilar = -1;
-    double valorSimilaridade = 2;
+    double valorSimilaridade = 0;
 
     for (int j = 0; j < sim->n; j++) {
         if (j == indCliente) continue;
