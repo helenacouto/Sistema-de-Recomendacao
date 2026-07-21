@@ -12,7 +12,13 @@ int criaMatrizCompras(ListaCompras *lista, Similaridade *sim) {
 
     for (int i = 0; i < sim->n; i++) {
         sim->A[i] = (double*) malloc(sim->m * sizeof(double));
-        if (sim->A[i] == NULL) return false;
+        if (sim->A[i] == NULL)  {
+            for (int k = 0; k < i; k++) {
+                free(sim->A[k]);
+                sim->A[k] = NULL;
+            }
+            return false;
+        }
     }
 
     for (int i = 0; i < sim->n; i++) {
@@ -35,7 +41,13 @@ int criaTranspostaCompras(Similaridade *sim) {
 
     for (int i = 0; i < sim->m; i++) {
         sim->At[i] = (double*) malloc(sim->n * sizeof(double));
-        if (sim->At[i] == NULL) return false;
+        if (sim->At[i] == NULL)  {
+            for (int k = 0; k < i; k++) {
+                free(sim->At[k]);
+                sim->At[k] = NULL;
+            }
+            return false;
+        }
     }
 
     for (int i = 0; i < sim->n; i++) {
@@ -63,7 +75,13 @@ int criaMatrizIntersecao(Similaridade *sim) {
 
     for (int i = 0; i < sim->n; i++) {
         sim->I[i] = (double*) malloc(sim->n * sizeof(double));
-        if (sim->I[i] == NULL) return false;
+        if (sim->I[i] == NULL)  {
+            for (int k = 0; k < i; k++) {
+                free(sim->I[k]);
+                sim->I[k] = NULL;
+            }
+            return false;
+        }
     }
 
     for (int i = 0; i < sim->n; i++) {
@@ -99,7 +117,13 @@ int criaMatrizSimilaridade(Similaridade *sim) {
 
     for (int i = 0; i < sim->n; i++) {
         sim->S[i] = (double*) malloc(sim->n * sizeof(double));
-        if (sim->S[i] == NULL) return false;
+        if (sim->S[i] == NULL)  {
+            for (int k = 0; k < i; k++) {
+                free(sim->S[k]);
+                sim->S[k] = NULL;
+            }
+            return false;
+        }
     }
 
     for (int i = 0; i < sim->n; i++) {
