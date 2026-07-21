@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "Recomendacao.h"
 #include <algorithm>
+#include "Recomendacao.h"
 
 using namespace std;
 
