@@ -4,20 +4,39 @@
 
 using namespace std;
 
-int criaMatrizCompras(ListaCompras *lista, Similaridade *sim) {
-    sim->A = (double**) malloc(sim->n * sizeof(double*));
-    if (sim->A == NULL) return 0;
+double **criaMatrizDouble(int linhas, int colunas) {
+    double **matriz = (double **) malloc(linhas * sizeof(double *));
 
-    for (int i = 0; i < sim->n; i++) {
-        sim->A[i] = (double*) malloc(sim->m * sizeof(double));
-        if (sim->A[i] == NULL)  {
-            for (int k = 0; k < i; k++) {
-                free(sim->A[k]);
-                sim->A[k] = NULL;
-            }
-            return 1;
+    if (matriz == NULL)
+        return NULL;
+
+    for (int i = 0; i < linhas; i++) {
+        matriz[i] = (double *) malloc(colunas * sizeof(double));
+
+        if (matriz[i] == NULL) {
+            for (int j = 0; j < i; j++) free(matriz[j]);
+
+            free(matriz);
+            return NULL;
         }
     }
+
+    return matriz;
+}
+
+void liberaMatrizDouble(double **matriz, int linhas) {
+    if (matriz == NULL) return;
+
+    for (int i = 0; i < linhas; i++) {
+        free(matriz[i]);
+        matriz[i] = NULL;
+    }
+    free(matriz);
+}
+
+int criaMatrizCompras(ListaCompras *lista, Similaridade *sim) {
+    sim->A = criaMatrizDouble(sim->n, sim->m);
+    if (sim->A == NULL) return 0;
 
     for (int i = 0; i < sim->n; i++) {
         for (int j = 0; j < sim->m; j++) {
@@ -34,53 +53,20 @@ int criaMatrizCompras(ListaCompras *lista, Similaridade *sim) {
 }
 
 int criaTranspostaCompras(Similaridade *sim) {
-    sim->At = (double**) malloc(sim->m * sizeof(double*));
+    sim->At = criaMatrizDouble(sim->m, sim->n);
     if (sim->At == NULL) return 0;
-
-    for (int i = 0; i < sim->m; i++) {
-        sim->At[i] = (double*) malloc(sim->n * sizeof(double));
-        if (sim->At[i] == NULL)  {
-            for (int k = 0; k < i; k++) {
-                free(sim->At[k]);
-                sim->At[k] = NULL;
-            }
-            return 0;
-        }
-    }
 
     for (int i = 0; i < sim->n; i++) {
         for (int j = 0; j < sim->m; j++) {
             sim->At[j][i] = sim->A[i][j];
-
         }
     }
     return 1;
 }
 
-void liberaMatrizDouble(double **matriz, int linhas) {
-    if (matriz == NULL) return;
-
-    for (int i = 0; i < linhas; i++) {
-        free(matriz[i]);
-        matriz[i] = NULL;
-    }
-    free(matriz);
-}
-
 int criaMatrizIntersecao(Similaridade *sim) {
-    sim->I = (double**) malloc(sim->n * sizeof(double*));
+    sim->I = criaMatrizDouble(sim->n, sim->n);
     if (sim->I == NULL) return 0;
-
-    for (int i = 0; i < sim->n; i++) {
-        sim->I[i] = (double*) malloc(sim->n * sizeof(double));
-        if (sim->I[i] == NULL)  {
-            for (int k = 0; k < i; k++) {
-                free(sim->I[k]);
-                sim->I[k] = NULL;
-            }
-            return 0;
-        }
-    }
 
     for (int i = 0; i < sim->n; i++) {
         for (int j = 0; j < sim->n; j++) {
@@ -91,7 +77,7 @@ int criaMatrizIntersecao(Similaridade *sim) {
         }
     }
 
-    liberaMatrizDouble(sim->A, sim->m);
+    liberaMatrizDouble(sim->A, sim->n);
     sim->A = NULL;
     liberaMatrizDouble(sim->At, sim->m);
     sim->At = NULL;
@@ -100,30 +86,22 @@ int criaMatrizIntersecao(Similaridade *sim) {
 }
 
 int criaIntersecaoEficiente(Similaridade *sim) {
-    sim->I = (double**) malloc(sim->n * sizeof(double*));
+    sim->I = criaMatrizDouble(sim->n, sim->n);
     if (sim->I == NULL) return 0;
 
     for (int i = 0; i < sim->n; i++) {
-        sim->I[i] = (double*) malloc(sim->n * sizeof(double));
-        if (sim->I[i] == NULL)  {
-            for (int k = 0; k < i; k++) {
-                free(sim->I[k]);
-                sim->I[k] = NULL;
-            }
-            return 0;
-        }
-    }
-
-    for (int i = 0; i < sim->n; i++) {
-        for (int j = 0; j < sim->n; j++) {
+        for (int j = i; j < sim->n; j++) {
             sim->I[i][j] = 0;
+
             for (int k = 0; k < sim->m; k++) {
                 sim->I[i][j] += sim->A[i][k] * sim->A[j][k];
             }
+
+            sim->I[j][i] = sim->I[i][j];
         }
     }
 
-    liberaMatrizDouble(sim->A, sim->m);
+    liberaMatrizDouble(sim->A, sim->n);
     sim->A = NULL;
 
     return 1;
@@ -147,30 +125,19 @@ int criaMatrizSimilaridade(ListaCompras *lista, Similaridade *sim, int alg) {
     clock_t inicio = clock();
     if (!criaMatrizCompras(lista, sim)) return 0;
 
-    if (alg == 1) {
+    if (alg == 0) {
         if (!criaTranspostaCompras(sim)) return 0;
         if (!criaMatrizIntersecao(sim)) return 0;
     }
 
-    if (alg == 2) {
+    if (alg == 1) {
         if (!criaIntersecaoEficiente(sim)) return 0;
     }
 
     if(!criaVetorP(lista, sim)) return 0;
 
-    sim->S = (double**) malloc(sim->n * sizeof(double*));
+    sim->S = criaMatrizDouble(sim->n, sim->n);
     if (sim->S == NULL) return 0;
-
-    for (int i = 0; i < sim->n; i++) {
-        sim->S[i] = (double*) malloc(sim->n * sizeof(double));
-        if (sim->S[i] == NULL)  {
-            for (int k = 0; k < i; k++) {
-                free(sim->S[k]);
-                sim->S[k] = NULL;
-            }
-            return 0;
-        }
-    }
 
     for (int i = 0; i < sim->n; i++) {
         for (int j = 0; j < sim->n; j++) {
@@ -213,6 +180,6 @@ void testadorExibeSimilaridade (Similaridade *sim, ListaCompras *lista, int indC
     printf("\nSimilaridade: %.4f\n", valorSimilaridade);
 }
 
-void exibeTempoExecucao(Similaridade *sim) {
-    cout << "Tempo de execucao " << sim->tempo << " segundos.\n";
+void exibeTempoExecucao(Similaridade *sim, const char *nome) {
+    printf("Algoritmo %s: %.6f segundos\n", nome, sim->tempo);
 }

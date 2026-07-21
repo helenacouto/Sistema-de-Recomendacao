@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
     if (argc < 5) {
         printf("Erro! Uso correto: %s <ARQUIVO_CSV> <ENTREGA> <ALGORITMO> <K>\n", argv[0]);
         printf("ENTREGA: 1 = ListaCompras | 2 = Similaridade | 3 = Recomendacao\n");
-        printf("ALGORITMO: 1 = PADRAO | 2 = ADAPTADO");
+        printf("ALGORITMO: 0 = PADRAO | 1 = ADAPTADO\n");
         printf("Exemplo: %s dados/dados_venda_cluster_0.csv 2 1 5\n", argv[0]);
         return 1;
     }
@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
     int k = atoi(argv[4]);
 
     if (entrega > 4 || entrega < 1) {
-        printf("ENTREGA invalida. Use 1, 2 ou 3.\n");
+        printf("ENTREGA invalida. Use 1, 2, 3 ou 4.\n");
         return 1;
     }    
 
@@ -32,7 +32,9 @@ int main(int argc, char *argv[]) {
     }
 
     Similaridade sim;
-    if (!criaMatrizSimilaridade(&lista, &sim, algoritmo)) return 1;
+    if (entrega != 4) {
+        if (!criaMatrizSimilaridade(&lista, &sim, algoritmo)) return 1;
+    }
 
     if (entrega == 2) {
         testadorExibeSimilaridade(&sim, &lista, 1);
@@ -48,7 +50,18 @@ int main(int argc, char *argv[]) {
     }
 
     if (entrega == 4) {
-        exibeTempoExecucao(&sim);
+        Similaridade simPadrao;
+        Similaridade simAdaptado;
+
+        if (!criaMatrizSimilaridade(&lista, &simPadrao, 0)) return 1;
+        exibeTempoExecucao(&simPadrao, "padrao");
+
+        if (!criaMatrizSimilaridade(&lista, &simAdaptado, 1)) return 1;
+        exibeTempoExecucao(&simAdaptado, "adaptado");
+
+        liberaMatrizDouble(simPadrao.S, simPadrao.n);
+        liberaMatrizDouble(simAdaptado.S, simAdaptado.n);
+
         return 0;
     }
 }

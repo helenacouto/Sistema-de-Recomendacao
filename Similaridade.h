@@ -23,6 +23,6 @@ int criaVetorP(ListaCompras *lista, Similaridade *sim);
 int criaMatrizSimilaridade(ListaCompras *lista, Similaridade *sim, int alg);
 double calculaSimilaridade(Similaridade *sim, int i, int j);
 void testadorExibeSimilaridade (Similaridade *sim, ListaCompras *lista, int indCliente);
-void exibeTempoExecucao(Similaridade *sim);
+void exibeTempoExecucao(Similaridade *sim, const char *nome);
 
 #endif
