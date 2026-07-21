@@ -17,20 +17,22 @@ g++ ListaCompras.cpp Similaridade.cpp Recomendacao.cpp main.cpp -o sistema
 ## Como usar
 
 ```bash
-./sistema <arquivo.csv> <entrega> <k>
+./sistema <arquivo.csv> <entrega> <algoritmo> <k>
 ```
 
 | Argumento | Descrição |
 |---|---|
 | `arquivo.csv` | base de compras a ser lida (ex: `dados/dados_venda_cluster_0.csv`) |
-| `entrega` | qual testador rodar: `1` = ListaCompras, `2` = Similaridade, `3` = Recomendação |
+| `entrega` | qual testador rodar: `1` = ListaCompras, `2` = Similaridade, `3` = Recomendação, <br> `4` = Multiplicação Eficiente |
+| `algoritmo` | qual algoritmo usar: `0` = Padrão, `1` = Adaptado | 
 | `k` | quantidade de produtos recomendados (usado só na entrega `3`) |
 
 Exemplos:
 ```bash
-./sistema dados/dados_venda_cluster_0.csv 1 0   # testador da Atividade 1
-./sistema dados/dados_venda_cluster_0.csv 2 0   # testador da Atividade 2
-./sistema dados/dados_venda_cluster_0.csv 3 10  # testador da Atividade 3
+./sistema dados/dados_venda_cluster_0.csv 1 0 0   # testador da Atividade 1
+./sistema dados/dados_venda_cluster_0.csv 2 1 0   # testador da Atividade 2
+./sistema dados/dados_venda_cluster_0.csv 3 1 10  # testador da Atividade 3
+./sistema dados/dados_venda_cluster_0.csv 4 0 0   # testador da Atividade 4
 ```
 
 ##  Integrantes
