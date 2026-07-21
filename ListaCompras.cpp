@@ -3,6 +3,13 @@
 
 using namespace std;
 
+int jaComprou(ListaCompras *lista, int c, int p) {
+    for (int compra : lista->listaCompras[c]) {
+        if (compra == p) return 1;
+    }
+    return 0;
+}
+
 int criaListaCompras(char *arquivoEscolhido, ListaCompras *lista) {
     Leitura compra;
     FILE *arquivo;
@@ -10,7 +17,7 @@ int criaListaCompras(char *arquivoEscolhido, ListaCompras *lista) {
     arquivo = fopen(arquivoEscolhido, "r");
     if (arquivo == NULL) {
         perror("Erro ao abrir o arquivo.");
-        return false;
+        return 0;
     }
     
     fscanf(arquivo, "%*[^\n]\n");
@@ -37,7 +44,7 @@ int criaListaCompras(char *arquivoEscolhido, ListaCompras *lista) {
     arquivo = fopen(arquivoEscolhido, "r");
     if (arquivo == NULL) {
         perror("Erro ao abrir o arquivo.");
-        return false;
+        return 0;
     }
 
     fscanf(arquivo, "%*[^\n]\n");
@@ -51,10 +58,13 @@ int criaListaCompras(char *arquivoEscolhido, ListaCompras *lista) {
         indCliente = lista->mapaClientes[compra.cod_cliente];
         indProduto = lista->mapaProdutos[compra.cod_produto];
 
-        lista->listaCompras[indCliente].push_back(indProduto);
+        if(!jaComprou(lista, indCliente, indProduto)) {
+            lista->listaCompras[indCliente].push_back(indProduto);
+        }
     }
+
     fclose(arquivo);
-    return true;
+    return 1;
 }
 
 void mostrarProdutosCliente(ListaCompras *lista, char *codigoCliente) {
