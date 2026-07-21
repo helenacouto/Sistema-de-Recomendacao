@@ -1,12 +1,10 @@
 #include <stdlib.h>
+#include <ctime>
 #include "Similaridade.h"
 
 using namespace std;
 
 int criaMatrizCompras(ListaCompras *lista, Similaridade *sim) {
-    sim->n = lista->vetorClientes.size();
-    sim->m = lista->vetorProdutos.size();
-
     sim->A = (double**) malloc(sim->n * sizeof(double*));
     if (sim->A == NULL) return 0;
 
@@ -93,10 +91,40 @@ int criaMatrizIntersecao(Similaridade *sim) {
         }
     }
 
-    liberaMatrizDouble(sim->A, sim->n);
+    liberaMatrizDouble(sim->A, sim->m);
     sim->A = NULL;
     liberaMatrizDouble(sim->At, sim->m);
     sim->At = NULL;
+
+    return 1;
+}
+
+int criaIntersecaoEficiente(Similaridade *sim) {
+    sim->I = (double**) malloc(sim->n * sizeof(double*));
+    if (sim->I == NULL) return 0;
+
+    for (int i = 0; i < sim->n; i++) {
+        sim->I[i] = (double*) malloc(sim->n * sizeof(double));
+        if (sim->I[i] == NULL)  {
+            for (int k = 0; k < i; k++) {
+                free(sim->I[k]);
+                sim->I[k] = NULL;
+            }
+            return 0;
+        }
+    }
+
+    for (int i = 0; i < sim->n; i++) {
+        for (int j = 0; j < sim->n; j++) {
+            sim->I[i][j] = 0;
+            for (int k = 0; k < sim->m; k++) {
+                sim->I[i][j] += sim->A[i][k] * sim->A[j][k];
+            }
+        }
+    }
+
+    liberaMatrizDouble(sim->A, sim->m);
+    sim->A = NULL;
 
     return 1;
 }
@@ -108,10 +136,28 @@ int criaVetorP(ListaCompras *lista, Similaridade *sim) {
     for (int i = 0; i < sim->n; i++) {
         sim->P[i] = lista->listaCompras[i].size();
     }
-    return 0;
+    return 1;
 }
 
-int criaMatrizSimilaridade(Similaridade *sim) {
+
+int criaMatrizSimilaridade(ListaCompras *lista, Similaridade *sim, int alg) {
+    sim->n = lista->vetorClientes.size();
+    sim->m = lista->vetorProdutos.size();
+
+    clock_t inicio = clock();
+    if (!criaMatrizCompras(lista, sim)) return 0;
+
+    if (alg == 1) {
+        if (!criaTranspostaCompras(sim)) return 0;
+        if (!criaMatrizIntersecao(sim)) return 0;
+    }
+
+    if (alg == 2) {
+        if (!criaIntersecaoEficiente(sim)) return 0;
+    }
+
+    if(!criaVetorP(lista, sim)) return 0;
+
     sim->S = (double**) malloc(sim->n * sizeof(double*));
     if (sim->S == NULL) return 0;
 
@@ -136,6 +182,9 @@ int criaMatrizSimilaridade(Similaridade *sim) {
     sim->I = NULL;
     free(sim->P);
     sim->P = NULL;
+
+    clock_t fim = clock();
+    sim->tempo = double(fim - inicio) / CLOCKS_PER_SEC;
 
     return 1;
 }
@@ -162,4 +211,8 @@ void testadorExibeSimilaridade (Similaridade *sim, ListaCompras *lista, int indC
     cout << "\nCliente " << lista->vetorClientes[indSimilar] 
         << " eh o mais similar ao cliente " << lista->vetorClientes[indCliente];
     printf("\nSimilaridade: %.4f\n", valorSimilaridade);
+}
+
+void exibeTempoExecucao(Similaridade *sim) {
+    cout << "Tempo de execucao " << sim->tempo << " segundos.\n";
 }
