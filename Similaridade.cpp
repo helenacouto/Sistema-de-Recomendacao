@@ -8,7 +8,7 @@ int criaMatrizCompras(ListaCompras *lista, Similaridade *sim) {
     sim->m = lista->vetorProdutos.size();
 
     sim->A = (double**) malloc(sim->n * sizeof(double*));
-    if (sim->A == NULL) return false;
+    if (sim->A == NULL) return 0;
 
     for (int i = 0; i < sim->n; i++) {
         sim->A[i] = (double*) malloc(sim->m * sizeof(double));
@@ -17,7 +17,7 @@ int criaMatrizCompras(ListaCompras *lista, Similaridade *sim) {
                 free(sim->A[k]);
                 sim->A[k] = NULL;
             }
-            return false;
+            return 1;
         }
     }
 
@@ -32,12 +32,12 @@ int criaMatrizCompras(ListaCompras *lista, Similaridade *sim) {
             sim->A[i][produto] = 1;
         }
     }
-    return true;
+    return 1;
 }
 
 int criaTranspostaCompras(Similaridade *sim) {
     sim->At = (double**) malloc(sim->m * sizeof(double*));
-    if (sim->At == NULL) return false;
+    if (sim->At == NULL) return 0;
 
     for (int i = 0; i < sim->m; i++) {
         sim->At[i] = (double*) malloc(sim->n * sizeof(double));
@@ -46,7 +46,7 @@ int criaTranspostaCompras(Similaridade *sim) {
                 free(sim->At[k]);
                 sim->At[k] = NULL;
             }
-            return false;
+            return 0;
         }
     }
 
@@ -56,7 +56,7 @@ int criaTranspostaCompras(Similaridade *sim) {
 
         }
     }
-    return true;
+    return 1;
 }
 
 void liberaMatrizDouble(double **matriz, int linhas) {
@@ -71,7 +71,7 @@ void liberaMatrizDouble(double **matriz, int linhas) {
 
 int criaMatrizIntersecao(Similaridade *sim) {
     sim->I = (double**) malloc(sim->n * sizeof(double*));
-    if (sim->I == NULL) return false;
+    if (sim->I == NULL) return 0;
 
     for (int i = 0; i < sim->n; i++) {
         sim->I[i] = (double*) malloc(sim->n * sizeof(double));
@@ -80,7 +80,7 @@ int criaMatrizIntersecao(Similaridade *sim) {
                 free(sim->I[k]);
                 sim->I[k] = NULL;
             }
-            return false;
+            return 0;
         }
     }
 
@@ -98,22 +98,22 @@ int criaMatrizIntersecao(Similaridade *sim) {
     liberaMatrizDouble(sim->At, sim->m);
     sim->At = NULL;
 
-    return true;
+    return 1;
 }
 
 int criaVetorP(ListaCompras *lista, Similaridade *sim) {
     sim->P = (int*) malloc(sim->n * sizeof(int));
-    if (sim->P == NULL) return false;
+    if (sim->P == NULL) return 0;
 
     for (int i = 0; i < sim->n; i++) {
         sim->P[i] = lista->listaCompras[i].size();
     }
-    return true;
+    return 0;
 }
 
 int criaMatrizSimilaridade(Similaridade *sim) {
     sim->S = (double**) malloc(sim->n * sizeof(double*));
-    if (sim->S == NULL) return false;
+    if (sim->S == NULL) return 0;
 
     for (int i = 0; i < sim->n; i++) {
         sim->S[i] = (double*) malloc(sim->n * sizeof(double));
@@ -122,7 +122,7 @@ int criaMatrizSimilaridade(Similaridade *sim) {
                 free(sim->S[k]);
                 sim->S[k] = NULL;
             }
-            return false;
+            return 0;
         }
     }
 
@@ -137,7 +137,7 @@ int criaMatrizSimilaridade(Similaridade *sim) {
     free(sim->P);
     sim->P = NULL;
 
-    return true;
+    return 1;
 }
 
 double calculaSimilaridade(Similaridade *sim, int i, int j) {

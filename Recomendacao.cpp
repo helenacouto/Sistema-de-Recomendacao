@@ -27,9 +27,9 @@ void criaVetorRanqueamento(Similaridade *sim, Recomendacao *rec) {
 
 static int jaComprou(ListaCompras *lista, int c, int p) {
     for (int compra : lista->listaCompras[c]) {
-        if (compra == p) return true;
+        if (compra == p) return 1;
     }
-    return false;
+    return 0;
 }
 
 void calculaRanqueamento(Similaridade *sim, ListaCompras *lista, Recomendacao *rec, int c) {
@@ -79,9 +79,9 @@ void recomendaProdutos(ListaCompras *lista, Similaridade *sim, char *codigo, int
 }
 
 void testadorExibeRecomendados(ListaCompras *lista, Similaridade *sim, int k) {
-    char cliente1[] = "99DL9N01";
-    char cliente2[] = "77602301";
-    char cliente3[] = "22047601";
+    char cliente1[] = "99CL9Y01";
+    char cliente2[] = "9O6OSM01";
+    char cliente3[] = "99EF7201";
 
     recomendaProdutos(lista, sim, cliente1, k);
     recomendaProdutos(lista, sim, cliente2, k);
