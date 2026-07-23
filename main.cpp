@@ -69,10 +69,6 @@ int main(int argc, char *argv[]) {
     }
 
     if (entrega == 5) {
-        Similaridade simCSR;
-
-        testadorComparaSimilaridade (&lista);
-
         return 0;
     }
 }
