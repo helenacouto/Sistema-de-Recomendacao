@@ -2,49 +2,53 @@
 #include "Similaridade.h"
 
 
-int criaIntersecaoCSR(MatrizCSR *matrizCompras, MatrizCSR *matrizDestino, Similaridade *sim) {
-    matrizDestino->n_linhas = sim->n;
-    matrizDestino->n_colunas = sim->n;
+void criaIntersecaoCSR(MatrizCSR *A, MatrizCSR *C, Similaridade *sim) {
+    C->values.clear();
+    C->col_index.clear();
 
-    matrizDestino->row_ptr.push_back(0);
+    C->row_ptr.clear();
+    for (int i = 0; i <= sim->n; i++) {
+        C->row_ptr.push_back(0);
+    }
 
     int cont = 0;
 
-    for (int i = 0; i < sim->n; i ++) {
-        for (int j = 0; j < sim->n; j++) {
-            if (i == j) continue;
+    for (int i =0; i < sim->n; i++) {
+        if (A->row_ptr[i] == A->row_ptr[i+1]) {
+            C->row_ptr[i+1].push_back(cont);
+            continue;
+        }
 
-            int indLinhaI = matrizCompras->row_ptr[i];
-            int fimLinhaI = matrizCompras->row_ptr[i + 1];
-            int indLinhaJ = matrizCompras->row_ptr[j];
-            int fimLinhaJ = matrizCompras->row_ptr[j + 1];
+        for ( int j = 0; j < sim->n; j++) {
+            if (j == 1) continue;
 
             int soma = 0;
+            int p = A->row_ptr[i];
+            int q = A->row_ptr[j];
+            int fimLinhaI = A->row_ptr[i + 1];
+            int fimLinhaJ = A->row_ptr[j + 1];
 
-            while (indLinhaI < fimLinhaI && indLinhaJ < fimLinhaJ) {
-                int colunaI = matrizCompras->col_index[indLinhaI];
-                int colunaJ = matrizCompras->col_index[indLinhaJ];
-
-                if (colunaI < colunaJ) {
-                    indLinhaI++;
-                } else if (colunaI > colunaJ) {
-                    indLinhaJ++;
+            while (p < fimLinhaI && q < fimLinhaJ) {
+                if (A->col_index[p] == A->col_index[q]) {
+                    soma += A->values[p] * A->values[q];
+                    p++;
+                    q++;
+                } else if (A->col_index[p] < A->col_index[q]) {
+                    p++;
                 } else {
-                    soma += matrizCompras->values[indLinhaI] * matrizCompras->values[indLinhaJ];
-                    indLinhaI++;
-                    indLinhaJ++;
+                    q++;
                 }
             }
 
-            if (soma > 0) {
-                matrizDestino->values.push_back(soma);
-                matrizDestino->col_index.push_back(j);
+            if (soma != 0) {
+                C->values.push_back(soma);
+                C->col_index.push_back(j);
                 cont++;
             }
         }
 
-        matrizDestino->row_ptr.push_back(cont);
+        C->row_ptr[i + 1].push_back(cont);
     }
 
-    return 1;
+    return;
 }
