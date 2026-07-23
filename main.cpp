@@ -18,8 +18,8 @@ int main(int argc, char *argv[]) {
     int algoritmo = atoi(argv[3]);
     int k = atoi(argv[4]);
 
-    if (entrega > 4 || entrega < 1) {
-        printf("ENTREGA invalida. Use 1, 2, 3 ou 4.\n");
+    if (entrega > 5 || entrega < 1) {
+        printf("ENTREGA invalida. Use 1, 2, 3, 4 ou 5.\n");
         return 1;
     }    
 
@@ -60,7 +60,18 @@ int main(int argc, char *argv[]) {
         exibeTempoExecucao(&simAdaptado, "adaptado");
 
         liberaMatrizDouble(simPadrao.S, simPadrao.n);
+        simPadrao.S = NULL;
+
         liberaMatrizDouble(simAdaptado.S, simAdaptado.n);
+
+
+        return 0;
+    }
+
+    if (entrega == 5) {
+        Similaridade simCSR;
+
+        testadorComparaSimilaridade (&lista);
 
         return 0;
     }
