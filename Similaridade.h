@@ -1,7 +1,17 @@
 #ifndef SIMILARIDADE_H
 #define SIMILARIDADE_H
 
+#include <vector>
+#include <iostream>
 #include "ListaCompras.h"
+
+typedef struct {
+    std::vector<int> values;
+    std::vector<int> col_index;
+    std::vector<int> row_ptr;
+    int n_linhas;
+    int n_colunas;
+} MatrizCSR;
 
 typedef struct {
     double **A;
@@ -12,8 +22,13 @@ typedef struct {
     int m;
     int n;
     double tempo;
+
+    MatrizCSR comprasCSR;
+    MatrizCSR intersecaoCSR;
+    MatrizCSR similaridadeCSR;
 } Similaridade;
 
+double **criaMatrizDouble(int linhas, int colunas);
 int criaMatrizCompras(ListaCompras *lista, Similaridade *sim);
 int criaTranspostaCompras(Similaridade *sim);
 void liberaMatrizDouble(double **matriz, int linhas);
