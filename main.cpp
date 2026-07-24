@@ -59,8 +59,8 @@ int main(int argc, char *argv[]) {
         } else {
             criaMatrizSimilaridadeCSR(&lista, &simCSR);
             testadorExibeRecomendadosCSR(&lista, &simCSR, k);
-        return 0;
         }
+        return 0;
     }
 
     if (entrega == 4) {
