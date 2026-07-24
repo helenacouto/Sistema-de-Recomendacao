@@ -84,10 +84,10 @@ void mostrarProdutosCliente(ListaCompras *lista, char *codigoCliente) {
 }
 
 void testadorExibeProdutos(ListaCompras *lista) {
-    char cliente1[] = "99CL9Y01";
-    char cliente2[] = "9O6OSM01";
-    char cliente3[] = "99EF7201";
-
+    char cliente1[] = "99DIQV01";
+    char cliente2[] = "99KQAA01";
+    char cliente3[] = "99FT8Z01";
+    
     mostrarProdutosCliente(lista, cliente1);
     mostrarProdutosCliente(lista, cliente2);
     mostrarProdutosCliente(lista, cliente3);

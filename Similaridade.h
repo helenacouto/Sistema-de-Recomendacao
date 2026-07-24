@@ -5,7 +5,6 @@
 #include <list>
 #include <iostream>
 #include "ListaCompras.h"
-#include "CSR.h"
 
 typedef struct {
     double **A;
@@ -16,9 +15,6 @@ typedef struct {
     int m;
     int n;
     double tempo;
-
-    MatrizCSR intersecaoCSR;
-    MatrizCSR similaridadeCSR;
 } Similaridade;
 
 double **criaMatrizDouble(int linhas, int colunas);
@@ -32,12 +28,5 @@ int criaMatrizSimilaridade(ListaCompras *lista, Similaridade *sim, int alg);
 double calculaSimilaridade(Similaridade *sim, int i, int j);
 void testadorExibeSimilaridade (Similaridade *sim, ListaCompras *lista, int indCliente);
 void exibeTempoExecucao(Similaridade *sim, const char *nome);
-
-int criaMatrizComprasCSR(ListaCompras *lista, MatrizCSR *A, Similaridade *sim);
-int criaMatrizSimilaridadeCSR (ListaCompras *lista, Similaridade *sim);
-double calculaSimilaridadeCSR (Similaridade *sim, int i, int j);
-void testadorExibeSimilaridadeCSR (Similaridade *sim, ListaCompras *lista, int indCliente);
-void comparaMemoria (Similaridade *sim);
-void testadorComparaSimilaridade (ListaCompras *lista);
 
 #endif

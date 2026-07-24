@@ -3,13 +3,14 @@
 #include "ListaCompras.h"
 #include "Similaridade.h"
 #include "Recomendacao.h"
+#include "CSR.h"
 
 int main(int argc, char *argv[]) {
     if (argc < 5) {
         printf("Erro! Uso correto: %s <ARQUIVO_CSV> <ENTREGA> <ALGORITMO> <K>\n", argv[0]);
         printf("ENTREGA: 1 = ListaCompras | 2 = Similaridade | 3 = Recomendacao\n");
         printf("ALGORITMO: 0 = PADRAO | 1 = ADAPTADO\n");
-        printf("Exemplo: %s dados/dados_venda_cluster_0.csv 2 1 5\n", argv[0]);
+        printf("Exemplo: %s dados/dados_venda_cluster_1.csv 3 2 10\n", argv[0]);
         return 1;
     }
 
@@ -32,43 +33,61 @@ int main(int argc, char *argv[]) {
     }
 
     Similaridade sim;
-    if (entrega != 4) {
-        if (!criaMatrizSimilaridade(&lista, &sim, algoritmo)) return 1;
-    }
-
+    SimilaridadeCSR simCSR;
     if (entrega == 2) {
-        testadorExibeSimilaridade(&sim, &lista, 1);
-        testadorExibeSimilaridade(&sim, &lista, 4);
-        liberaMatrizDouble(sim.S, sim.n);
-        sim.S = NULL;
+        if (algoritmo != 2) {
+            if (!criaMatrizSimilaridade(&lista, &sim, algoritmo)) return 1;
+
+            testadorExibeSimilaridade(&sim, &lista, 1);
+            testadorExibeSimilaridade(&sim, &lista, 4);
+
+            liberaMatrizDouble(sim.S, sim.n);
+            sim.S = NULL;
+        } else {
+            criaMatrizSimilaridadeCSR(&lista, &simCSR);
+
+            testadorExibeSimilaridadeCSR(&lista, &simCSR, 1);
+            testadorExibeSimilaridadeCSR(&lista, &simCSR, 4);
+        }
         return 0;
     }
 
     if (entrega == 3) {
-        testadorExibeRecomendados(&lista, &sim, k);
+        if (algoritmo != 2) {
+            if (!criaMatrizSimilaridade(&lista, &sim, algoritmo)) return 1;
+            testadorExibeRecomendados(&lista, &sim, k);
+        } else {
+            criaMatrizSimilaridadeCSR(&lista, &simCSR);
+            testadorExibeRecomendadosCSR(&lista, &simCSR, k);
         return 0;
+        }
     }
 
     if (entrega == 4) {
-        Similaridade simPadrao;
-        Similaridade simAdaptado;
+        if (!criaMatrizSimilaridade(&lista, &sim, 0)) return 1;
+        exibeTempoExecucao(&sim, "padrao");
 
-        if (!criaMatrizSimilaridade(&lista, &simPadrao, 0)) return 1;
-        exibeTempoExecucao(&simPadrao, "padrao");
+        liberaMatrizDouble(sim.S, sim.n);
+        sim.S = NULL;
 
-        if (!criaMatrizSimilaridade(&lista, &simAdaptado, 1)) return 1;
-        exibeTempoExecucao(&simAdaptado, "adaptado");
+        if (!criaMatrizSimilaridade(&lista, &sim, 1)) return 1;
+        exibeTempoExecucao(&sim, "adaptado");
 
-        liberaMatrizDouble(simPadrao.S, simPadrao.n);
-        simPadrao.S = NULL;
-
-        liberaMatrizDouble(simAdaptado.S, simAdaptado.n);
-
+        liberaMatrizDouble(sim.S, sim.n);
+        sim.S = NULL;
 
         return 0;
     }
 
     if (entrega == 5) {
+        if (!criaMatrizSimilaridade(&lista, &sim, 1)) return 1;
+        exibeTempoExecucao(&sim, "adaptado");
+
+        liberaMatrizDouble(sim.S, sim.n);
+        sim.S = NULL;
+
+        criaMatrizSimilaridadeCSR(&lista, &simCSR);
+        printf("Algoritmo CSR: %.6f segundos\n", simCSR.tempo);
         return 0;
     }
 }
