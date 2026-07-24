@@ -23,8 +23,8 @@ g++ ListaCompras.cpp Similaridade.cpp Recomendacao.cpp CSR.cpp main.cpp -o siste
 | Argumento | Descrição |
 |---|---|
 | `arquivo.csv` | base de compras a ser lida (ex: `dados/dados_venda_cluster_1.csv`) |
-| `entrega` | qual testador rodar: `1` = ListaCompras, `2` = Similaridade, `3` = Recomendação, <br> `4` = Multiplicação Eficiente |
-| `algoritmo` | qual algoritmo usar: `0` = Padrão, `1` = Adaptado | 
+| `entrega` | qual testador rodar: `1` = ListaCompras, `2` = Similaridade, `3` = Recomendação, <br> `4` = Multiplicação Eficiente, `5` = Matrizes Esparsas (CSR) |
+| `algoritmo` | qual algoritmo usar: `0` = Padrão, `1` = Adaptado, `2` = CSR | 
 | `k` | quantidade de produtos recomendados (usado só na entrega `3`) |
 
 Exemplos:
