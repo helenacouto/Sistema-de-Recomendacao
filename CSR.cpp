@@ -15,12 +15,12 @@ void criaIntersecaoCSR(MatrizCSR *A, MatrizCSR *C, Similaridade *sim) {
 
     for (int i =0; i < sim->n; i++) {
         if (A->row_ptr[i] == A->row_ptr[i+1]) {
-            C->row_ptr[i+1].push_back(cont);
+            C->row_ptr[i + 1] = cont;
             continue;
         }
 
         for ( int j = 0; j < sim->n; j++) {
-            if (j == 1) continue;
+            if (j == i) continue;
 
             int soma = 0;
             int p = A->row_ptr[i];
@@ -47,7 +47,7 @@ void criaIntersecaoCSR(MatrizCSR *A, MatrizCSR *C, Similaridade *sim) {
             }
         }
 
-        C->row_ptr[i + 1].push_back(cont);
+        C->row_ptr[i + 1] = cont;
     }
 
     return;

@@ -2,6 +2,7 @@
 #define SIMILARIDADE_H
 
 #include <vector>
+#include <list>
 #include <iostream>
 #include "ListaCompras.h"
 #include "CSR.h"
@@ -16,7 +17,6 @@ typedef struct {
     int n;
     double tempo;
 
-    MatrizCSR comprasCSR;
     MatrizCSR intersecaoCSR;
     MatrizCSR similaridadeCSR;
 } Similaridade;
@@ -32,9 +32,8 @@ int criaMatrizSimilaridade(ListaCompras *lista, Similaridade *sim, int alg);
 double calculaSimilaridade(Similaridade *sim, int i, int j);
 void testadorExibeSimilaridade (Similaridade *sim, ListaCompras *lista, int indCliente);
 void exibeTempoExecucao(Similaridade *sim, const char *nome);
-void ordenaListaCompras (ListaCompras *lista, Similaridade *sim, vector<int> &vetorCompras);
-int criaMatrizComprasCSR(ListaCompras *lista, Similaridade *sim, MatrizCSR *matrizDestino, vector<int> &vetorCompras);
-int criaIntersecaoCSR(MatrizCSR *matrizCompras, MatrizCSR *matrizDestino, Similaridade *sim);
+
+int criaMatrizComprasCSR(ListaCompras *lista, MatrizCSR *A, Similaridade *sim);
 int criaMatrizSimilaridadeCSR (ListaCompras *lista, Similaridade *sim);
 double calculaSimilaridadeCSR (Similaridade *sim, int i, int j);
 void testadorExibeSimilaridadeCSR (Similaridade *sim, ListaCompras *lista, int indCliente);

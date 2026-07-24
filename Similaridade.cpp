@@ -183,56 +183,30 @@ void exibeTempoExecucao(Similaridade *sim, const char *nome) {
     printf("Algoritmo %s: %.6f segundos\n", nome, sim->tempo);
 }
 
-void ordenaListaCompras (ListaCompras *lista, Similaridade *sim, vector<int> &vetorCompras) {
-    for (int i = 0; i < sim->n; i++) {
-        vector<int> produtosCliente;
-
-        for (int produto : lista->listaCompras[i]) {
-            produtosCliente.push_back(produto);
-        }
-
-        for (int posicao = 0; posicao < (int) produtosCliente.size(); posicao++) {
-            int valorAtual = produtosCliente[posicao];
-            int j = posicao - 1;
-
-            while (j >= 0 && produtosCliente[j] > valorAtual) {
-                produtosCliente[j + 1] = produtosCliente[j];
-                j--;
-            }
-
-            produtosCliente[j + 1] = valorAtual;
-        }
-
-        for (int produto : produtosCliente) {
-            vetorCompras.push_back(produto);
-        }
+void criaMatrizComprasCSR (ListaCompras *lista, MatrizCSR *A, Similaridade *sim) {
+    A->values.clear();
+    A->col_index.clear();
+    
+    A->row_ptr.clear();
+    for (int i =0; i <= sim->n; i++) {
+        A->row_ptr.push_back(0);
     }
-}
-
-int criaMatrizComprasCSR(ListaCompras *lista, Similaridade *sim, MatrizCSR *matrizDestino, vector<int> &vetorCompras) {
-    matrizDestino->n_linhas = sim->n;
-    matrizDestino->n_colunas = sim->m;
-
-    matrizDestino->row_ptr.push_back(0);
 
     int cont = 0;
 
     for (int i = 0; i < sim->n; i++) {
-        int qtdProdutosCliente = lista->listaCompras[i].size();
+        lista->listaCompras[i].sort();
 
-        for (int k = 0; k < qtdProdutosCliente; k++) {
-            int produto = vetorCompras[cont];
-
-            matrizDestino->col_index.push_back(produto);
-            matrizDestino->values.push_back(1);
-
-            cont++;
+        for (int produto : lista->listaCompras[i]) {
+            A->col_index.push_back(produto);
+            A->values.push_back(1);
+            cont++
         }
 
-        matrizDestino->row_ptr.push_back(cont);
+        A->row_ptr[i + 1] = cont;
     }
 
-    return 1;
+    return;
 }
 
 int criaMatrizSimilaridadeCSR (ListaCompras *lista, Similaridade *sim) {
@@ -241,12 +215,10 @@ int criaMatrizSimilaridadeCSR (ListaCompras *lista, Similaridade *sim) {
 
     clock_t inicio = clock();
 
-    vector<int> vetorCompras;
-    ordenaListaCompras(lista, sim, vetorCompras);
-
-    if (!criaMatrizComprasCSR(lista, sim, &sim->comprasCSR, vetorCompras)) return 0;
-    if (!criaIntersecaoCSR(&sim->comprasCSR, &sim->intersecaoCSR, sim)) return 0;
-    if (!criaVetorP(lista, sim)) return 0;
+    MatrizCSR A;
+    criaMatrizComprasCSR(lista, &A, sim);
+    criaIntersecaoCSR(&A, &sim->intersecaoCSR, sim);
+    criaVetorP(lista, sim);
 
     clock_t fim = clock();
     sim->tempo = double(fim - inicio) / CLOCKS_PER_SEC;
@@ -255,23 +227,19 @@ int criaMatrizSimilaridadeCSR (ListaCompras *lista, Similaridade *sim) {
 }
 
 double calculaSimilaridadeCSR (Similaridade *sim, int i, int j) {
-    MatrizCSR *I = &sim->intersecaoCSR;
+    MatrizCSR *C = &sim->intersecaoCSR;
 
-    int inicio = I->row_ptr[i];
-    int fim = I->row_ptr[i + 1];
+    int inicio = C->row_ptr[i];
+    int fim = C->row_ptr[i + 1];
 
     for (int k = inicio; k < fim; k++) {
-        if (I->col_index[k] == j) {
-            return 1.0 - (double) I->values[k] / sim->P[i];
+        if (C->col_index[k] == j) {
+            return 1.0 - (double) C->values[k] / sim->P[i];
         }
     }
-
-    return 1.0;
 }
 
-
-void testadorExibeSimilaridadeCSR (Similaridade *sim, 
-    ListaCompras *lista, int indCliente) {
+void testadorExibeSimilaridadeCSR (Similaridade *sim, ListaCompras *lista, int indCliente) {
     int indSimilar = -1;
     double valorSimilaridade = 0;
 
