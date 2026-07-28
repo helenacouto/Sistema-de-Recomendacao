@@ -29,7 +29,7 @@ void criaMatrizComprasCSR (ListaCompras *lista, MatrizCSR *A, SimilaridadeCSR *s
         }
 
         A->row_ptr[i + 1] = cont;
-        simCSR->P.push_back(A->row_ptr[i + 1] - A->row_ptr[i]); // Cria o vetor P no caminho !
+        simCSR->P.push_back(A->row_ptr[i + 1] - A->row_ptr[i]);
     }
 
     return;
@@ -108,7 +108,7 @@ void criaMatrizSimilaridadeCSR (ListaCompras *lista, SimilaridadeCSR *simCSR) {
             cont++;
         }
         S->row_ptr.push_back(cont);
-    } // Cria a matriz de similaridade necessaria pra recomendação de produtos!
+    }
 
     clock_t fim = clock();
     simCSR->tempo = double(fim - inicio) / CLOCKS_PER_SEC;

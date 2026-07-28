@@ -5,7 +5,7 @@
 #include "ListaCompras.h"
 
 typedef struct {
-    std::vector<double> values; // troquei por double pq pra calcular a similaridade é valor quebrado
+    std::vector<double> values;
     std::vector<int> col_index;
     std::vector<int> row_ptr;
 } MatrizCSR;
