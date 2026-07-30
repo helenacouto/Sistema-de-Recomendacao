@@ -88,6 +88,7 @@ int main(int argc, char *argv[]) {
 
         criaMatrizSimilaridadeCSR(&lista, &simCSR);
         printf("Algoritmo CSR: %.6f segundos\n", simCSR.tempo);
+        comparaMemoria(&simCSR);
         return 0;
     }
 }

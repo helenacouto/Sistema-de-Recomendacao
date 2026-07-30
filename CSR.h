@@ -11,6 +11,7 @@ typedef struct {
 } MatrizCSR;
 
 typedef struct {
+    MatrizCSR comprasCSR;
     MatrizCSR intersecaoCSR;
     MatrizCSR similaridadeCSR;
     std::vector<int> P;
@@ -24,5 +25,6 @@ void criaIntersecaoCSR(MatrizCSR *A, MatrizCSR *C, SimilaridadeCSR *simCSR);
 void criaMatrizSimilaridadeCSR (ListaCompras *lista, SimilaridadeCSR *simCSR);
 double calculaSimilaridadeCSR (SimilaridadeCSR *simCSR, int i, int j);
 void testadorExibeSimilaridadeCSR (ListaCompras *lista, SimilaridadeCSR *simCSR, int indCliente);
+void comparaMemoria(SimilaridadeCSR *simCSR);
 
 #endif

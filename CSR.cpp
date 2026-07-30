@@ -89,9 +89,9 @@ void criaIntersecaoCSR(MatrizCSR *A, MatrizCSR *C, SimilaridadeCSR *simCSR) {
 void criaMatrizSimilaridadeCSR (ListaCompras *lista, SimilaridadeCSR *simCSR) {
     clock_t inicio = clock();
 
-    MatrizCSR A;
-    criaMatrizComprasCSR(lista, &A, simCSR);
-    criaIntersecaoCSR(&A, &simCSR->intersecaoCSR, simCSR);
+    MatrizCSR *A = &simCSR->comprasCSR;
+    criaMatrizComprasCSR(lista, A, simCSR);
+    criaIntersecaoCSR(A, &simCSR->intersecaoCSR, simCSR);
     
     MatrizCSR *C = &simCSR->intersecaoCSR;
     MatrizCSR *S = &simCSR->similaridadeCSR;
@@ -149,4 +149,30 @@ void testadorExibeSimilaridadeCSR (ListaCompras *lista, SimilaridadeCSR *simCSR,
     printf("\nSimilaridade: %.4f\n", valorSimilaridade);
 }
 
-// void comparaMemoria(SimilaridadeCSR *simCSR)
+void comparaMemoria(SimilaridadeCSR *simCSR) {
+    unsigned long memCSR = 
+        simCSR->comprasCSR.values.size() * sizeof(double) +
+        simCSR->comprasCSR.col_index.size() * sizeof(int) +
+        simCSR->comprasCSR.row_ptr.size() * sizeof(int) +
+
+        simCSR->intersecaoCSR.values.size() * sizeof(double) +
+        simCSR->intersecaoCSR.col_index.size() * sizeof(int) +
+        simCSR->intersecaoCSR.row_ptr.size() * sizeof(int) +
+
+        simCSR->similaridadeCSR.values.size() * sizeof(double) +
+        simCSR->similaridadeCSR.col_index.size() * sizeof(int) +
+        simCSR->similaridadeCSR.row_ptr.size() * sizeof(int) +
+
+        simCSR->P.size() * sizeof(int);
+
+    unsigned long memDensa = 
+        (unsigned long) simCSR->n * simCSR->m * sizeof(double) +
+        2 * (unsigned long) simCSR->n * simCSR->n * sizeof(double);
+
+    long long economiaAbsoluta = memDensa - memCSR;
+    double economiaPercentual = (1.0 - (double) memCSR / memDensa) * 100;
+
+    printf("Memoria estimada (Densa): %lu bytes\n", memDensa);
+    printf("Memoria estimada (CSR): %lu bytes\n", memCSR);
+    printf("Economia de memoria absoluta e percentual estimada: %lld bytes (%.2f%%)\n", economiaAbsoluta, economiaPercentual);
+}
