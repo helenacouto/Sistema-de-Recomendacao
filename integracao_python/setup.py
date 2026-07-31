@@ -4,7 +4,7 @@ from pybind11.setup_helpers import Pybind11Extension, build_ext
 ext_modules = [
     Pybind11Extension(
         "sistema_recomendacao",
-        ["../Similaridade.cpp", "../Recomendacao.cpp", "../CSR.cpp"],
+        ["bindings.cpp", "../Similaridade.cpp", "../Recomendacao.cpp", "../CSR.cpp"],
         include_dirs=[".."], # pra pegar arquivos de fora da pasta
         cxx_std=17,
     )

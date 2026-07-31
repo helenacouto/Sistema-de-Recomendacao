@@ -25,6 +25,13 @@ void criaVetorRanqueamento(int qntdProdutos, Recomendacao *rec) {
     }
 }
 
+int jaComprou(ListaCompras *lista, int c, int p) {
+    for (int compra : lista->listaCompras[c]) {
+        if (compra == p) return 1;
+    }
+    return 0;
+}
+
 void calculaRanqueamento(Similaridade *sim, ListaCompras *lista, Recomendacao *rec, int c) {
     for (int s : rec->L) {
         double similaridade = calculaSimilaridade(sim, c, s);

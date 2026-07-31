@@ -17,6 +17,7 @@ typedef struct {
     double tempo;
 } Similaridade;
 
+void testeLegal();
 double **criaMatrizDouble(int linhas, int colunas);
 int criaMatrizCompras(ListaCompras *lista, Similaridade *sim);
 int criaTranspostaCompras(Similaridade *sim);

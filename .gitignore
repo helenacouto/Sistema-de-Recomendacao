@@ -1,4 +1,23 @@
-/dados
-/output
+# Pastas de build do Python e C++
+**/build/
+dist/
+*.egg-info/
+
+# Binários compilados
+**/*.pyd
+*.so
+*.dll
 *.exe
-sistema
+*.obj
+*.o
+
+# Ambientes virtuais e cache do Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Geral
+aula_28-07
+dados
+integracao

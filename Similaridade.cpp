@@ -4,6 +4,10 @@
 
 using namespace std;
 
+void testeLegal() {
+    printf("Teste legal muito massa");
+}
+
 double **criaMatrizDouble(int linhas, int colunas) {
     double **matriz = (double **) malloc(linhas * sizeof(double *));
 
