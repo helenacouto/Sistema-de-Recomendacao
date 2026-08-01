@@ -17,7 +17,6 @@ typedef struct {
     double tempo;
 } Similaridade;
 
-void testeLegal();
 double **criaMatrizDouble(int linhas, int colunas);
 int criaMatrizCompras(ListaCompras *lista, Similaridade *sim);
 int criaTranspostaCompras(Similaridade *sim);
@@ -28,6 +27,6 @@ int criaVetorP(ListaCompras *lista, Similaridade *sim);
 int criaMatrizSimilaridade(ListaCompras *lista, Similaridade *sim, int alg);
 double calculaSimilaridade(Similaridade *sim, int i, int j);
 void testadorExibeSimilaridade (Similaridade *sim, ListaCompras *lista, int indCliente);
-void exibeTempoExecucao(Similaridade *sim, const char *nome);
+void exibeTempoExecucao(double tempo, const char *nome);
 
 #endif

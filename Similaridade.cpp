@@ -4,10 +4,6 @@
 
 using namespace std;
 
-void testeLegal() {
-    printf("Teste legal muito massa");
-}
-
 double **criaMatrizDouble(int linhas, int colunas) {
     double **matriz = (double **) malloc(linhas * sizeof(double *));
 
@@ -184,6 +180,6 @@ void testadorExibeSimilaridade (Similaridade *sim, ListaCompras *lista, int indC
     printf("\nSimilaridade: %.4f\n", valorSimilaridade);
 }
 
-void exibeTempoExecucao(Similaridade *sim, const char *nome) {
-    printf("Algoritmo %s: %.6f segundos\n", nome, sim->tempo);
+void exibeTempoExecucao(double tempo, const char *nome) {
+    printf("Algoritmo %s: %.6f segundos\n", nome, tempo);
 }
