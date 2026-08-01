@@ -65,13 +65,13 @@ int main(int argc, char *argv[]) {
 
     if (entrega == 4) {
         if (!criaMatrizSimilaridade(&lista, &sim, 0)) return 1;
-        exibeTempoExecucao(&sim, "padrao");
+        exibeTempoExecucao(sim.tempo, "padrao");
 
         liberaMatrizDouble(sim.S, sim.n);
         sim.S = NULL;
 
         if (!criaMatrizSimilaridade(&lista, &sim, 1)) return 1;
-        exibeTempoExecucao(&sim, "adaptado");
+        exibeTempoExecucao(sim.tempo, "adaptado");
 
         liberaMatrizDouble(sim.S, sim.n);
         sim.S = NULL;
@@ -81,13 +81,13 @@ int main(int argc, char *argv[]) {
 
     if (entrega == 5) {
         if (!criaMatrizSimilaridade(&lista, &sim, 1)) return 1;
-        exibeTempoExecucao(&sim, "adaptado");
+        exibeTempoExecucao(sim.tempo, "adaptado");
 
         liberaMatrizDouble(sim.S, sim.n);
         sim.S = NULL;
 
         criaMatrizSimilaridadeCSR(&lista, &simCSR);
-        printf("Algoritmo CSR: %.6f segundos\n", simCSR.tempo);
+        exibeTempoExecucao(simCSR.tempo, "CSR");
         comparaMemoria(&simCSR);
         return 0;
     }

@@ -24,7 +24,6 @@ typedef struct {
     std::vector<std::list<int>> listaCompras;
 } ListaCompras;
 
-int jaComprou(ListaCompras *lista, int c, int p);
 int criaListaCompras(char *nome_arquivo, ListaCompras *lista);
 void mostrarProdutosCliente(ListaCompras *lista, char *codigoCliente);
 void testadorExibeProdutos(ListaCompras *lista);
