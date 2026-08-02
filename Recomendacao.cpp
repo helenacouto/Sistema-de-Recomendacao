@@ -25,7 +25,7 @@ void criaVetorRanqueamento(int qntdProdutos, Recomendacao *rec) {
     }
 }
 
-int jaComprou(ListaCompras *lista, int c, int p) {
+static int jaComprou(ListaCompras *lista, int c, int p) {
     for (int compra : lista->listaCompras[c]) {
         if (compra == p) return 1;
     }
@@ -45,7 +45,8 @@ void calculaRanqueamento(Similaridade *sim, ListaCompras *lista, Recomendacao *r
 }
 
 bool compararRanqueamento(const Rank &a, const Rank &b) {
-    return a.valor < b.valor;
+    if (a.valor != b.valor) return a.valor < b.valor;
+    return a.indProduto < b.indProduto;
 }
 
 void ordenaRanqueamento(Recomendacao *rec) {
@@ -75,9 +76,9 @@ void recomendaProdutos(ListaCompras *lista, Similaridade *sim, char *codigo, int
 }
 
 void testadorExibeRecomendados(ListaCompras *lista, Similaridade *sim, int k) {
-    char cliente1[] = "99DIQV01";
-    char cliente2[] = "99KQAA01";
-    char cliente3[] = "99FT8Z01";
+    char cliente1[] = "99CL9Y01";
+    char cliente2[] = "6719601";
+    char cliente3[] = "78704501";
 
     recomendaProdutos(lista, sim, cliente1, k);
     recomendaProdutos(lista, sim, cliente2, k);
@@ -121,9 +122,9 @@ void recomendaProdutosCSR(ListaCompras *lista, SimilaridadeCSR *simCSR, char *co
 }
 
 void testadorExibeRecomendadosCSR(ListaCompras *lista, SimilaridadeCSR *simCSR, int k) {
-    char cliente1[] = "99DIQV01";
-    char cliente2[] = "99KQAA01";
-    char cliente3[] = "99FT8Z01";
+    char cliente1[] = "99CL9Y01";
+    char cliente2[] = "6719601";
+    char cliente3[] = "78704501";
 
     recomendaProdutosCSR(lista, simCSR, cliente1, k);
     recomendaProdutosCSR(lista, simCSR, cliente2, k);

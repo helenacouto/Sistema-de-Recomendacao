@@ -17,7 +17,6 @@ def ler_arquivo(caminho_arquivo: str):
     lista = ListaCompras()
     caminho = Path(caminho_arquivo)
 
-    # Passagem 1
     with caminho.open("r", encoding="utf-8") as f:
         for numero_linha, linha in enumerate(f, start=1):
             linha = linha.strip()
