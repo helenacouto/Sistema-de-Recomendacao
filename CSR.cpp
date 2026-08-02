@@ -169,10 +169,10 @@ void comparaMemoria(SimilaridadeCSR *simCSR) {
         (unsigned long) simCSR->n * simCSR->m * sizeof(double) +
         2 * (unsigned long) simCSR->n * simCSR->n * sizeof(double);
 
-    long long economiaAbsoluta = memDensa - memCSR;
+    //unsigned long economiaAbsoluta = memDensa - memCSR;
     double economiaPercentual = (1.0 - (double) memCSR / memDensa) * 100;
 
     printf("Memoria estimada (Densa): %lu bytes\n", memDensa);
     printf("Memoria estimada (CSR): %lu bytes\n", memCSR);
-    printf("Economia de memoria absoluta e percentual estimada: %lld bytes (%.2f%%)\n", economiaAbsoluta, economiaPercentual);
+    printf("Percentual estimado de economia: %.2f%%\n", economiaPercentual);
 }
