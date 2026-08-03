@@ -25,7 +25,7 @@ void criaVetorRanqueamento(int qntdProdutos, Recomendacao *rec) {
     }
 }
 
-int jaComprou(ListaCompras *lista, int c, int p) {
+static int jaComprou(ListaCompras *lista, int c, int p) {
    for (int compra : lista->listaCompras[c]) {
        if (compra == p) return 1;
     }
@@ -45,7 +45,8 @@ void calculaRanqueamento(Similaridade *sim, ListaCompras *lista, Recomendacao *r
 }
 
 bool compararRanqueamento(const Rank &a, const Rank &b) {
-    return a.valor < b.valor;
+    if (a.valor != b.valor) return a.valor < b.valor;
+    return a.indProduto < b.indProduto;
 }
 
 void ordenaRanqueamento(Recomendacao *rec) {

@@ -28,8 +28,8 @@ def ler_arquivo(caminho_arquivo: str):
             if len(partes) < 4:
                 continue
 
-            cod_cliente  = partes[1]
-            cod_produto  = partes[2]
+            cod_cliente = partes[1]
+            cod_produto = partes[2]
             nome_produto = partes[3]
 
             if cod_cliente not in lista.mapa_clientes:
@@ -55,12 +55,12 @@ def ler_arquivo(caminho_arquivo: str):
             if len(partes) < 4:
                 continue
             
-            cod_cliente  = partes[1]
-            cod_produto  = partes[2]
+            cod_cliente = partes[1]
+            cod_produto = partes[2]
             nome_produto = partes[3]
 
             ind_cliente = lista.mapa_clientes[cod_cliente]
-            ind_produto  = lista.mapa_produtos[cod_produto]
+            ind_produto = lista.mapa_produtos[cod_produto]
 
             # evita duplicatas (equivalente ao jaComprou do C++)
             if ind_produto not in lista.lista_compras[ind_cliente]:

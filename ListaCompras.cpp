@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int jaComprou(ListaCompras *lista, int c, int p) {
+static int jaComprou(ListaCompras *lista, int c, int p) {
     for (int compra : lista->listaCompras[c]) {
         if (compra == p) return 1;
     }

@@ -9,7 +9,7 @@ using namespace std;
 namespace py = pybind11;
 
 ListaCompras converte_lista(
-    vector<vector<int>> lista_compras, // o pybind traz como vector de vectors, por isso ainda n é list
+    vector<vector<int>> lista_compras,
     vector<string> vetor_clientes,
     map<string, int> mapa_clientes,
     vector<string> nome_produtos,
@@ -17,15 +17,17 @@ ListaCompras converte_lista(
 ) {
     ListaCompras lista;
     lista.vetorClientes = vetor_clientes;
-    lista.mapaClientes  = mapa_clientes;
-    lista.nomeProdutos  = nome_produtos;
+    lista.mapaClientes = mapa_clientes;
+    lista.nomeProdutos = nome_produtos;
     lista.vetorProdutos.resize(n_produtos); // nao precisa preencher o vetor pois só o usam pra saber o tamanho (sim->m)
+    
+    // o mesmo para o mapa dos produtos, ele só é usado na leitura em C, n faz sentido trazer pra cá
 
     lista.listaCompras.resize(lista_compras.size());
     for (int i = 0; i < (int)lista_compras.size(); i++) {
-        lista.listaCompras[i] = list<int>(
-            lista_compras[i].begin(), lista_compras[i].end() // agora sim preenche como list!
-        );
+        for (int p : lista_compras[i]) {
+            lista.listaCompras[i].push_back(p);
+        }
     }
 
     return lista;
