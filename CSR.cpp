@@ -96,18 +96,28 @@ void criaMatrizSimilaridadeCSR (ListaCompras *lista, SimilaridadeCSR *simCSR) {
     MatrizCSR *C = &simCSR->intersecaoCSR;
     MatrizCSR *S = &simCSR->similaridadeCSR;
 
-    S->row_ptr.push_back(0);
+    S->values.clear();
+    S->col_index.clear();
+
+    S->row_ptr.clear();
+    for (int i = 0; i <= simCSR->n; i++) {
+        S->row_ptr.push_back(0);
+    }
+
     int cont = 0;
 
     for (int i = 0; i < simCSR->n; i++) {
-        for (int k = C->row_ptr[i]; k < C->row_ptr[i + 1]; k++) {
+        int inicioLinha = C->row_ptr[i];
+        int fimLinha = C->row_ptr[i + 1];
+        
+        for (int k = inicioLinha; k < fimLinha; k++) {
             int j = C->col_index[k];
 
             S->values.push_back(1.0 - C->values[k] / simCSR->P[i]);
             S->col_index.push_back(j);
             cont++;
         }
-        S->row_ptr.push_back(cont);
+        S->row_ptr[i + 1] = cont;
     }
 
     clock_t fim = clock();
@@ -115,14 +125,14 @@ void criaMatrizSimilaridadeCSR (ListaCompras *lista, SimilaridadeCSR *simCSR) {
 }
 
 double calculaSimilaridadeCSR (SimilaridadeCSR *simCSR, int i, int j) {
-    MatrizCSR *C = &simCSR->intersecaoCSR;
+    MatrizCSR *S = &simCSR->similaridadeCSR;
 
-    int inicio = C->row_ptr[i];
-    int fim = C->row_ptr[i + 1];
+    int inicioLinha = S->row_ptr[i];
+    int fimLinha = S->row_ptr[i + 1];
 
-    for (int k = inicio; k < fim; k++) {
-        if (C->col_index[k] == j) {
-            return 1.0 - (double) C->values[k] / simCSR->P[i];
+    for (int k = inicioLinha; k < fimLinha; k++) {
+        if (S->col_index[k] == j) {
+            return S->values[k];
         }
     }
 
