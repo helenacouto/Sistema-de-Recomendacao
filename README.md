@@ -17,9 +17,9 @@ O projeto é dividido em seis atividades incrementais, cada uma adicionando um m
 | 1 | `ListaCompras` | Leitura do CSV e montagem das estruturas de dados (vetores, mapas, lista de compras por cliente) |
 | 2 | `Similaridade` | Construção da matriz de similaridade de Jaccard via multiplicação de matrizes densa |
 | 3 | `Recomendacao` | Ranqueamento e seleção dos *k* produtos mais recomendados para cada cliente |
-| 4 | Multiplicação eficiente | Otimização da multiplicação explorando a simetria de A × Aᵀ, reduzindo operações pela metade |
+| 4 | `Multiplicação eficiente` | Otimização da multiplicação explorando a simetria de A × Aᵀ, reduzindo operações pela metade |
 | 5 | `CSR` | Representação esparsa (Compressed Sparse Row) da matriz de compras e de similaridade, viabilizando bases grandes |
-| 6 | Integração Python | Reimplementação da leitura de dados em Python e integração com os módulos C++ via pybind11 |
+| 6 | `Integração Python` | Reimplementação da leitura de dados em Python e integração com os módulos C++ via pybind11 |
 
 ## Como compilar (C++)
 
