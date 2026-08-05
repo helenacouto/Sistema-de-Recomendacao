@@ -8,7 +8,7 @@
 int main(int argc, char *argv[]) {
     if (argc < 5) {
         printf("Erro! Uso correto: %s <ARQUIVO_CSV> <ENTREGA> <ALGORITMO> <K>\n", argv[0]);
-        printf("ENTREGA: 1 = ListaCompras | 2 = Similaridade | 3 = Recomendacao\n");
+        printf("ENTREGA: 1 = ListaCompras | 2 = Similaridade | 3 = Recomendacao | 4 = Multiplicacao Eficiente | 5 = CSR\n");
         printf("ALGORITMO: 0 = PADRAO | 1 = ADAPTADO\n");
         printf("Exemplo: %s dados/dados_venda_cluster_1.csv 3 2 10\n", argv[0]);
         return 1;
@@ -22,7 +22,12 @@ int main(int argc, char *argv[]) {
     if (entrega > 5 || entrega < 1) {
         printf("ENTREGA invalida. Use 1, 2, 3, 4 ou 5.\n");
         return 1;
-    }    
+    }
+
+    if (algoritmo > 2 || algoritmo < 0) {
+        printf("ALGORITMO invalido. Use 0, 1 ou 2.");
+        return 1;
+    }
 
     ListaCompras lista;
     if (!criaListaCompras(nome_arquivo, &lista)) return 1;

@@ -19,9 +19,7 @@ ListaCompras converte_lista(
     lista.vetorClientes = vetor_clientes;
     lista.mapaClientes = mapa_clientes;
     lista.nomeProdutos = nome_produtos;
-    lista.vetorProdutos.resize(n_produtos); // nao precisa preencher o vetor pois só o usam pra saber o tamanho (sim->m)
-    
-    // o mesmo para o mapa dos produtos, ele só é usado na leitura em C, n faz sentido trazer pra cá
+    lista.vetorProdutos.resize(n_produtos);
 
     lista.listaCompras.resize(lista_compras.size());
     for (int i = 0; i < (int)lista_compras.size(); i++) {
@@ -125,8 +123,27 @@ void compara_tempos_memoria(
 PYBIND11_MODULE(sistema_recomendacao, m) {
     m.doc() = "Sistema de Recomendacao - integracao Python-C++";
 
-    m.def("testa_similaridade", &testa_similaridade);
-    m.def("testa_recomendados", &testa_recomendados);
-    m.def("compara_tempos", &compara_tempos);
-    m.def("compara_tempos_memoria", &compara_tempos_memoria);
+    m.def(
+        "testa_similaridade",
+        &testa_similaridade,
+        "Calcula a matriz de similaridade e exibe a similaridade entre dois clientes (por índice)."
+    );
+
+    m.def(
+        "testa_recomendados",
+        &testa_recomendados,
+        "Calcula e exibe produtos mais recomendados para tres clientes a partir da matriz de similaridade."
+    );
+
+    m.def(
+        "compara_tempos",
+        &compara_tempos,
+        "Compara tempo de execucao do algoritmo padrao com o algoritmo adaptado."
+    );
+
+    m.def(
+        "compara_tempos_memoria",
+        &compara_tempos_memoria,
+        "Compara tempo de execucao e uso da memoria entre os algoritmos padrao, adaptado e CSR."
+    );
 }

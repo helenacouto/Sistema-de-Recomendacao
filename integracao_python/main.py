@@ -6,7 +6,7 @@ import sistema_recomendacao as sr
 def main():
     if len(sys.argv) < 5:
         print(f"Erro! Uso correto: python {sys.argv[0]} <ARQUIVO_CSV> <ENTREGA> <ALGORITMO> <K>")
-        print("ENTREGA:   1 = ListaCompras | 2 = Similaridade | 3 = Recomendacao")
+        print("ENTREGA:   1 = ListaCompras | 2 = Similaridade | 3 = Recomendacao | 4 = Multiplicacao Eficiente | 5 = CSR")
         print("ALGORITMO: 0 = PADRAO | 1 = ADAPTADO | 2 = CSR")
         print(f"Exemplo: python {sys.argv[0]} dados/dados_venda_cluster_0.csv 3 1 10")
         sys.exit(1)
@@ -17,7 +17,11 @@ def main():
     k = int(sys.argv[4])
 
     if entrega < 1 or entrega > 5:
-        print("ENTREGA inválida. Use 1, 2, 3, 4 ou 5.")
+        print("ENTREGA invalida. Use 1, 2, 3, 4 ou 5.")
+        sys.exit(1)
+
+    if algoritmo < 0 or algoritmo > 2:
+        print("ALGORITMO invalido. Use 0, 1 ou 2.")
         sys.exit(1)
 
     lista = lc.ler_arquivo(f"../{arquivo}")
@@ -31,7 +35,7 @@ def main():
             lista.lista_compras,
             lista.vetor_clientes,
             n, algoritmo,
-            1, 4  # índices dos clientes exibidos pelo testador
+            1, 4
         )
 
     elif entrega == 3:

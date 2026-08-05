@@ -17,7 +17,6 @@ def ler_arquivo(caminho_arquivo: str):
     lista = ListaCompras()
     caminho = Path(caminho_arquivo)
 
-    # Passagem 1
     with caminho.open("r", encoding="utf-8") as f:
         for numero_linha, linha in enumerate(f, start=1):
             linha = linha.strip()
@@ -42,7 +41,6 @@ def ler_arquivo(caminho_arquivo: str):
                 lista.vetor_produtos.append(cod_produto)
                 lista.nome_produtos.append(nome_produto)
 
-    # Passagem 2
     with caminho.open("r", encoding="utf-8") as f:
         for numero_linha, linha in enumerate(f, start=1):
             linha = linha.strip()
@@ -62,7 +60,6 @@ def ler_arquivo(caminho_arquivo: str):
             ind_cliente = lista.mapa_clientes[cod_cliente]
             ind_produto = lista.mapa_produtos[cod_produto]
 
-            # evita duplicatas (equivalente ao jaComprou do C++)
             if ind_produto not in lista.lista_compras[ind_cliente]:
                 lista.lista_compras[ind_cliente].append(ind_produto)
 
