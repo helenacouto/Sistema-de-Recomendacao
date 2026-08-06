@@ -149,11 +149,13 @@ void compara_tempos(
 
     criaMatrizSimilaridade(&lista, &sim, 0);
     exibeTempoExecucao(sim.tempo, "padrao");
+    
     liberaMatrizDouble(sim.S, sim.n);
     sim.S = NULL;
 
     criaMatrizSimilaridade(&lista, &sim, 1);
     exibeTempoExecucao(sim.tempo, "adaptado");
+
     liberaMatrizDouble(sim.S, sim.n);
     sim.S = NULL;
 }
