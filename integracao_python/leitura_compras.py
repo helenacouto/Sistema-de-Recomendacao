@@ -44,9 +44,7 @@ def ler_arquivo(caminho_arquivo: str):
     with caminho.open("r", encoding="utf-8") as f:
         for numero_linha, linha in enumerate(f, start=1):
             linha = linha.strip()
-            if not linha:
-                continue
-            if numero_linha == 1:
+            if not linha or numero_linha == 1:
                 continue
 
             partes = linha.split(",")
