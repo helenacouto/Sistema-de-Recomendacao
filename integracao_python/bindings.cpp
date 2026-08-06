@@ -31,49 +31,112 @@ ListaCompras converte_lista(
     return lista;
 }
 
-void testa_similaridade(
+vector<vector<double>> converte_similaridade_vector(Similaridade *sim) {
+    vector<vector<double>> nova_sim;
+
+    for (int i = 0; i < sim->n; i++) {
+        vector<double> valores;
+        for (int j = 0; j < sim->n; j++) {
+            valores.push_back(sim->S[i][j]);
+        }
+        nova_sim.push_back(valores);
+    }
+
+    return nova_sim;
+}
+
+vector<vector<double>> cria_similaridade(
     vector<vector<int>> lista_compras,
     vector<string> vetor_clientes,
-    int n_produtos, int algoritmo,
+    int n_produtos, int algoritmo
+) {
+    ListaCompras lista = converte_lista(lista_compras, vetor_clientes, {}, {}, n_produtos);
+    Similaridade sim;
+
+    criaMatrizSimilaridade(&lista, &sim, algoritmo);
+    vector<vector<double>> nova_sim = converte_similaridade_vector(&sim);
+
+    liberaMatrizDouble(sim.S, sim.n);
+    sim.S = NULL;
+
+    return nova_sim;
+}
+
+Similaridade converte_vector_similaridade(const vector<vector<double>> &nova_sim) {
+    Similaridade sim;
+    sim.n = nova_sim.size();
+
+    sim.S = criaMatrizDouble(sim.n, sim.n);
+    for (int i = 0; i < sim.n; i++) {
+        for (int j = 0; j < sim.n; j++) {
+            sim.S[i][j] = nova_sim[i][j];
+        }
+    }
+
+    return sim;
+}
+
+void exibe_similaridade(
+    vector<vector<int>> lista_compras,
+    vector<string> vetor_clientes,
+    int n_produtos,
+    const vector<vector<double>> &nova_sim,
     int ind1, int ind2
 ) {
     ListaCompras lista = converte_lista(lista_compras, vetor_clientes, {}, {}, n_produtos);
+    Similaridade sim = converte_vector_similaridade(nova_sim);
 
-    if (algoritmo != 2) {
-        Similaridade sim;
-        criaMatrizSimilaridade(&lista, &sim, algoritmo);
-        testadorExibeSimilaridade(&sim, &lista, ind1);
-        testadorExibeSimilaridade(&sim, &lista, ind2);
-        liberaMatrizDouble(sim.S, sim.n);
-        sim.S = NULL;
-    } else {
-        SimilaridadeCSR simCSR;
-        criaMatrizSimilaridadeCSR(&lista, &simCSR);
-        testadorExibeSimilaridadeCSR(&lista, &simCSR, ind1);
-        testadorExibeSimilaridadeCSR(&lista, &simCSR, ind2);
-    }
+    testadorExibeSimilaridade(&sim, &lista, ind1);
+    testadorExibeSimilaridade(&sim, &lista, ind2);
+
+    liberaMatrizDouble(sim.S, sim.n);
+    sim.S = NULL;
 }
 
-void testa_recomendados(
+void exibe_similaridade_csr(
+    vector<vector<int>> lista_compras,
+    vector<string> vetor_clientes,
+    int n_produtos, int ind1, int ind2
+) {
+    ListaCompras lista = converte_lista(lista_compras, vetor_clientes, {}, {}, n_produtos);
+    SimilaridadeCSR simCSR;
+
+    criaMatrizSimilaridadeCSR(&lista, &simCSR);
+
+    testadorExibeSimilaridadeCSR(&lista, &simCSR, ind1);
+    testadorExibeSimilaridadeCSR(&lista, &simCSR, ind2);
+}
+
+void exibe_recomendados(
     vector<vector<int>> lista_compras,
     vector<string> vetor_clientes,
     map<string, int> mapa_clientes,
     vector<string> nome_produtos,
-    int n_produtos, int algoritmo, int k
+    int n_produtos,
+    const vector<vector<double>> &nova_sim,
+    int k
 ) {
     ListaCompras lista = converte_lista(lista_compras, vetor_clientes, mapa_clientes, nome_produtos, n_produtos);
+    Similaridade sim = converte_vector_similaridade(nova_sim);
 
-    if (algoritmo != 2) {
-        Similaridade sim;
-        criaMatrizSimilaridade(&lista, &sim, algoritmo);
-        testadorExibeRecomendados(&lista, &sim, k);
-        liberaMatrizDouble(sim.S, sim.n);
-        sim.S = NULL;
-    } else {
-        SimilaridadeCSR simCSR;
-        criaMatrizSimilaridadeCSR(&lista, &simCSR);
-        testadorExibeRecomendadosCSR(&lista, &simCSR, k);
-    }
+    testadorExibeRecomendados(&lista, &sim, k);
+
+    liberaMatrizDouble(sim.S, sim.n);
+    sim.S = NULL;
+}
+
+void exibe_recomendados_csr(
+    vector<vector<int>> lista_compras,
+    vector<string> vetor_clientes,
+    map<string, int> mapa_clientes,
+    vector<string> nome_produtos,
+    int n_produtos, int k
+) {
+    ListaCompras lista = converte_lista(lista_compras, vetor_clientes, mapa_clientes, nome_produtos, n_produtos);
+    SimilaridadeCSR simCSR;
+
+    criaMatrizSimilaridadeCSR(&lista, &simCSR);
+    testadorExibeRecomendadosCSR(&lista, &simCSR, k);
 }
 
 void compara_tempos(
@@ -123,27 +186,24 @@ void compara_tempos_memoria(
 PYBIND11_MODULE(sistema_recomendacao, m) {
     m.doc() = "Sistema de Recomendacao - integracao Python-C++";
 
-    m.def(
-        "testa_similaridade",
-        &testa_similaridade,
-        "Calcula a matriz de similaridade e exibe a similaridade entre dois clientes (por índice)."
-    );
+    m.def("cria_similaridade", &cria_similaridade,
+        "Constroi a matriz de similaridade (algoritmo 0 ou 1) e devolve como lista de listas.");
 
-    m.def(
-        "testa_recomendados",
-        &testa_recomendados,
-        "Calcula e exibe produtos mais recomendados para tres clientes a partir da matriz de similaridade."
-    );
+    m.def("exibe_similaridade", &exibe_similaridade,
+        "Reconstroi a matriz de similaridade a partir da lista de listas e exibe a comparacao entre dois clientes.");
 
-    m.def(
-        "compara_tempos",
-        &compara_tempos,
-        "Compara tempo de execucao do algoritmo padrao com o algoritmo adaptado."
-    );
+    m.def("exibe_similaridade_csr", &exibe_similaridade_csr,
+        "Constroi a matriz de similaridade em CSR e exibe a comparacao entre dois clientes.");
 
-    m.def(
-        "compara_tempos_memoria",
-        &compara_tempos_memoria,
-        "Compara tempo de execucao e uso da memoria entre os algoritmos padrao, adaptado e CSR."
-    );
+    m.def("exibe_recomendados", &exibe_recomendados,
+        "Reconstroi a matriz de similaridade a partir da lista de listas e exibe as recomendacoes.");
+
+    m.def("exibe_recomendados_csr", &exibe_recomendados_csr,
+        "Constroi a matriz de similaridade em CSR e exibe as recomendacoes.");
+
+    m.def("compara_tempos", &compara_tempos,
+        "Compara tempo de execucao do algoritmo padrao com o algoritmo adaptado.");
+
+    m.def("compara_tempos_memoria", &compara_tempos_memoria,
+        "Compara tempo de execucao e uso da memoria entre os algoritmos padrao, adaptado e CSR.");
 }
